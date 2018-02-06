@@ -17,19 +17,27 @@ oauth = OAuth1Session(client_key,
                           resource_owner_secret=resource_owner_secret)
 
 protected_url = 'https://api.twitter.com/1.1/search/tweets.json'
-params = {'q':'food'}
+params = {'q':'food', 'count': 10} #finding 'food' + only 10 tweets
 r = oauth.get(protected_url, params=params)
 # print (r.text)
 r2 = json.loads(r.text)
 results = r2["statuses"]
+# print(results)
 
-# print(results[0])
+## writing the search results to a json file 
+# search_fname = "tweet_search_result.json"
+# search_diction = results
+# search_str = json.dumps(search_diction)
+# cache_f = open(search_fname,"w")
+# cache_f.write(search_str)
+# cache_f.close()
+
 tweets_lst = []
-for dic in results:
-    tweets_lst.append(dic)
+for status_dic in results:
+    tweets_lst.append(status_dic)
 # print(tweets_lst)
 
 for tweet in tweets_lst:
-	print(tweet['created_at'] + tweet['text'])
+	print(tweet['user']['name'] + ': \n' + tweet['text'] + '\n')
 
 
